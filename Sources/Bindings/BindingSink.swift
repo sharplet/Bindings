@@ -65,9 +65,7 @@ extension BindingSink: Cancellable {
 
 extension BindingSink: BindingSubscriber {
   @discardableResult
-  public static func <~ <P: Publisher> (sink: BindingSink, publisher: P) -> AnyCancellable
-    where P.Output == Input, P.Failure == Failure
-  {
+  public static func <~ (sink: BindingSink, publisher: any Publisher<Input, Failure>) -> AnyCancellable {
     guard let owner = sink.owner else { return AnyCancellable({}) }
     let cancellable = AnyCancellable(sink)
     owner.store(cancellable)
